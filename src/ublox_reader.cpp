@@ -9,15 +9,15 @@
 
 using namespace std;
 
-static int NAV_POSLLH(uint8_t *buffer, classId *gps) {
-  memcpy(&gps->iTOW, buffer, 4);
-  memcpy(&gps->lon, buffer, 4);
-  memcpy(&gps->lat, buffer, 4);
-  memcpy(&gps->height, buffer + 12, 4);
-  memcpy(&gps->hMSL, buffer + 16, 4);
-  memcpy(&gps->hAcc, buffer + 20, 4);
-  memcpy(&gps->vAcc, buffer + 24, 4);
-  return 0;
+int NAV_POSLLH(uint8_t *buffer, classId *gps) {
+    memcpy(&gps->iTOW,   buffer + 0,  4);
+    memcpy(&gps->lon,    buffer + 4,  4);
+    memcpy(&gps->lat,    buffer + 8,  4);
+    memcpy(&gps->height, buffer + 12, 4);
+    memcpy(&gps->hMSL,   buffer + 16, 4);
+    memcpy(&gps->hAcc,   buffer + 20, 4);
+    memcpy(&gps->vAcc,   buffer + 24, 4);
+    return 0;
 }
 
 static vector<uint8_t> hexToBytes(const string &rawHex) {
