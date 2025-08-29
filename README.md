@@ -52,15 +52,32 @@ If you are able to compile your code successfully you should see something like 
 
 # Solution
 ## Understanding
-Describe what you understood about the problem.
+This project made me understand that we had to work with diffrent libraries in the project yet, somehow had to integrate them all together so they all work in synchorony also diffrent part of th project had diffrent things to work .So we can say we had to break down this complex piece of machinary's mind and work with simple well divided parts in order to come up with a working model. In conclusion multiple small not so hard coding parts ---> complex logic.  
 
 ## Thought Process
-After understanding the problem, describe how you decided to proceed towards solving the question.
+At first i wasent aware of the time we had to work with code so my work was done consideing i had less than half an hour at hand to complete it i took muliple parts of the code and considering the time uploaded to chat gpt ot further break down the parts of code and understanding what eah part was doing and this was what i was able to come up with:
+
+gripmap helped with getting the occupancy using simple grid mapping i.e. it marked cells in the grid as either free, occipied or unkown. This helped us with forming a map path by creating a simulated environment.
+
+planning deals with the path-planning algorithm after getting the value from gridmap creating a collisin free from initail to final position.This helped us gettign an idea of where the robot should go from in order to visit safely.
+
+odomentry helped us doing the odomentry calulation typically calculating the values using the values that is if wheels are moving equally the rover moved in a straight line .However if it didnt and wheels moved unevenly it created some sort of rotation along the x,y plane .This helps us get the position of rover even without the gps.
+
+ublox_reader does a lot of things including getting us latitude , longitude , height ,etc .It does something related to GPS ,i couldnt get the exact idea.
+
+main calls func from all gridmap, planner, odomentry and ublox_reader.Also runs given test cases reads the input passes them to function and checks the output.
+
+
 
 ## Implementation
-How did you decide to implement your solution.
+for planning.cpp:
+The planning part was partly done but not complete so I asked ChatGPT to help me finish it. The idea was to use BFS, which checks each nearby cell step by step and avoids blocked ones. It also remembers the parent of each cell so that in the end we can rebuild the path from the goal back to the start. I tested this using the given test case in main.cpp. It printed the path for a start and goal position, and the output matched the expected result, so I knew it worked.
 
-Mention the details, such as the path planning & odometry how you tested it.
+for odomentry.cpp:
+Odometry was also given in part, and I used ChatGPT to help complete it. The logic works by checking the difference in wheel encoder ticks. If both wheels move the same it goes straight, otherwise it turns in a curve. The code updates the robot’s x, y, and angle using the basic formulas as given in code. I tested this with the provided test case in main.cpp which gave some wheel tick values. The function returned the new robot pose, and the numbers matched what was expected in the test, so that confirmed it was correct.
+
+for Ublox_reader.cpp:
+This one I fixed myself at first the GPS values were not coming out right. I read the documentation and found that each field in the UBX NAV-POSLLH message is stored at a fixed offset (0, 4, 8, 12 …){<-- these are some sorts of bytes used by the system incicating where each field starts}.So I used memcpy with the correct offsets from the buffer into the struct fields. After this change, the GPS data (like longitude and latitude) came out properly when I tested it with the given input.
 
 # Google Form
 [Link to Repo Submission](https://docs.google.com/forms/d/e/1FAIpQLSdlVJ2LzP8wUOATRD804zDVL611rwwGMO1y_ecYu5aoV5YQfw/viewform)
